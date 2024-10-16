@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Text Editor Assistant</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #response {
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Text Editor Assistant</h1>
+    <textarea id="text-to-edit" placeholder="Paste the text to be edited here..."></textarea>
+    <textarea id="editing-instructions" placeholder="Type your editing instructions here..."></textarea>
+    <button id="edit-button">Edit Text</button>
+    <div id="response"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#edit-button').click(function() {
+                var textToEdit = $('#text-to-edit').val();
+                var editingInstructions = $('#editing-instructions').val();
+
+                $.ajax({
+                    url: '/edit',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        text_to_edit: textToEdit,
+                        message: editingInstructions
+                    }),
+                    success: function(response) {
+                        $('#text-to-edit').val(response.edited_text);
+                        $('#response').text('Assistant: ' + response.response);
+                    },
+                    error: function(xhr, status, error) {
+                        $('#response').text('An error occurred: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
