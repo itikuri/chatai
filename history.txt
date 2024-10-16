@@ -1,6 +1,6 @@
 [
   {
-    "name": "Chat 1",
+    "name": "CDRs in the IT",
     "messages": [
       {
         "role": "user",
